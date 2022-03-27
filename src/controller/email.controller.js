@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 
+
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: process.env.MAIL_PORT,
@@ -13,7 +14,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (req, res) => {
   const { to, subject, text } = req.body;
   const options = {
-    from: process.env.MAIL_USER,
+    from: process.env.MAIL_FROM,
     to,
     subject,
     html: text,
@@ -30,7 +31,7 @@ const sendEmail = async (req, res) => {
     await transporter.sendMail(options);
     res.status(200).json({ message: "Email sent" });
   } catch (error) {
-    res.status(500).json({ message: "Error sending email" });
+    res.status(500).json({ message: "Error sending email" + error });
   }
 };
 
